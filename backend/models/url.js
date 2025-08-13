@@ -1,15 +1,15 @@
 const mongoose=require('mongooe');
 const urlSchema=new mongoose.Schema({
-    urlcode:{
-        typr:String,
-        required:true,
-    },
     longurl:{
         type:String,
         required:true,
     },
     shorturl:{
         type:String,
+        required:true,
+    },
+    urlcode:{
+        typr:String,
         required:true,
     },
     clicks:{
