@@ -2,6 +2,7 @@ const validUrl=require('valid-url');
 const Url=require('../models/Url.js');
 const bcrypt=require('bcryptjs');
 const User=require('../models/User.js');
+const jwt=require('jsonwebtoken');
 
 
 const shortenUrl = async(req,res)=>{
@@ -51,13 +52,9 @@ const redirectToUrl =async(req,res)=>{
         const url=await Url.findOne({urlCode:req.params.code});
         if (url){
             url.Clicks++;
-            return res.redirect(301,url.longUrl);
+
             await url.save();
-            return res.statur(200).json({
-                success:true,
-                message:'url found',
-                data:url,
-            });
+            return res.redirect(301,url.longUrl);
         }
         else{
             return res.status(404).json({
@@ -121,11 +118,18 @@ const loginUser=async (req,res)=>{
         if (!isMatch){
             return res.status(400).json({success:false,error:'invalid credentials'});
         }
-        res.status(200).json({
-            success:true,
-            message:'user logged in successfully',
-            
+        
+        const payLoad={
+            user:{_id:user._id,},
+        };
+        const token=jwt.sign(payLoad,process.env.JWT_SECRET,{
+            expiresIn:'1h',
         });
+        res.status.json({
+            success:true,
+            token:token,
+        });
+
     }
     catch(err){
         console.error('database error:',err);
