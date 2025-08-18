@@ -1,4 +1,4 @@
-const mongoose=require('mongooe');
+const mongoose=require('mongoose');
 const urlSchema=new mongoose.Schema({
     longurl:{
         type:String,
@@ -9,10 +9,10 @@ const urlSchema=new mongoose.Schema({
         required:true,
     },
     urlcode:{
-        typr:String,
+        type:String,
         required:true,
     },
-    clicks:{
+    Clicks:{
         type:Number,
         required:true,
         default:0,
