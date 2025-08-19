@@ -25,11 +25,18 @@ const shortenUrl = async(req,res)=>{
         const {nanoid}=await import('nanoid');
         const urlCode=nanoid(7);
         shortUrl=`${process.env.BASE_URL}/${urlCode}`;
-        url=await Url.create({
+        const newUrlData={
             longUrl,
             shortUrl,
             urlCode,
-        });
+        };
+        if (req.user){
+            newUrlData.user=req.user.id;
+        }
+        url=await Url.create(newUrlData);
+
+
+
         res.status(201).json({success:true,data:url});
 
 
