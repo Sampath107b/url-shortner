@@ -15,6 +15,9 @@ app.use('/api',urlRoutes);
 const authRoutes=require('./routes/auth.js');
 app.use('/api/auth',authRoutes);
 
+const linksRoutes=require('./routes/links.js');
+app.use('/api/links',linksRoutes);
+
 const indexRoutes=require('./routes/index');
 app.use('/',indexRoutes);
 
