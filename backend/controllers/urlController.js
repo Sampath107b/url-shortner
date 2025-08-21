@@ -6,7 +6,7 @@ const jwt=require('jsonwebtoken');
 
 
 const shortenUrl = async(req,res)=>{
-    const longUrl=req.body;
+    const {longUrl}=req.body;
     console.log('recieved url',longUrl);
     if (!longUrl){
         return res.status(400).json({success:false,error:'please provide a long URL'});
@@ -17,7 +17,7 @@ const shortenUrl = async(req,res)=>{
     }
 
     try{
-        let url=await Url.findOne({longurl:longUrl});
+        let url=await Url.findOne({longUrl});
         if (url){
             return res.status(200).json({success:true,data:url});
         }
@@ -26,9 +26,9 @@ const shortenUrl = async(req,res)=>{
         const urlCode=nanoid(7);
         shortUrl=`${process.env.BASE_URL}/${urlCode}`;
         const newUrlData={
-            longUrl,
-            shortUrl,
-            urlCode,
+            longurl:longUrl,
+            shorturl:shortUrl,
+            urlcode:urlCode,
         };
         if (req.user){
             newUrlData.user=req.user.id;
@@ -51,7 +51,7 @@ const shortenUrl = async(req,res)=>{
 
 
 
-    res.status(200).json({success:true, message:'controller is working',data:{'recieved url':longUrl}});
+    // res.status(200).json({success:true, message:'controller is working',data:{'recieved url':longUrl}});
 };
 
 const redirectToUrl =async(req,res)=>{
