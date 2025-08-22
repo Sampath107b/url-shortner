@@ -78,12 +78,14 @@ const redirectToUrl =async(req,res)=>{
 };
 
 
-const registerUser=async (res,req)=>{
+const registerUser=async (req,res)=>{
     try{
         const {name,email,password}=req.body;
         if (!name || !email || !password){
             return res.status(400).json({success:false,error:'please provide all fields'});
         }
+
+        
         const exists=await User.findOne({email});
         if (exists){
             return res.status(400).json({success:false,error:'user already exists'});
@@ -107,7 +109,12 @@ const registerUser=async (res,req)=>{
         });
     }
     catch(err){
+        if (err.name==='ValidationError'){
+            const messages=Object.values(err.errors).map((val)=>val.message);
+            return res.status(400).json({success:false,error:messages.join(',')});
+        }
         console.error('database error:',err);
+
         res.status(500).json({success:false,error:'internal server error'});
     }
 };
