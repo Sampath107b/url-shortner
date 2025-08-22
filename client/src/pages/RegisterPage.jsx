@@ -45,7 +45,7 @@ const RegisterPage = () => {
 
     }
     catch(err){
-      const errorMessage = err.response?.data?.message || 'Registration failed. Please try again.';
+      const errorMessage = err.message || err.error || 'Registration failed. Please try again.';
       setError(errorMessage);
 
     }
