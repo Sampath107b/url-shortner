@@ -4,6 +4,7 @@ import React , {useState,useEffect}from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext.jsx';
 import { getUserLinks } from '../services/linkService.jsx';
+import Spinner from '../components/Spinner.jsx';
 
 
 const DashboardPage = () => {
@@ -42,7 +43,7 @@ const DashboardPage = () => {
     try {
       await navigator.clipboard.writeText(text);
       setCopyLinkId(linkId);
-      setTimeout(() => setCopyLinkId(null), 2000); 
+      setTimeout(() => setCopyLinkId(null), 2000);
       alert('URL Copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy URL: ', err);
@@ -61,23 +62,25 @@ const DashboardPage = () => {
     navigate('/login');
   };
   return (
-    <div className='dashboard-container'>
-      <h2>My Dashboard</h2>
-      <p>Welcome to your personal dashboard! Here you will be able to see all the links you have created.</p>
-      <div className='links-list-placeholder' style={{marginTop:'2rem'}}>
-        {isLoading ? (
-          <p>Loading your links...</p>) :
-          error?(
-            <p className='error-message'>{error}</p>
+    <div className="max-w-5xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
 
-          ): links.length>0 ?(
-            <table className="links-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #333' }}>
-                <th style={{ padding: '8px', textAlign: 'left' }}>Original URL</th>
-                <th style={{ padding: '8px', textAlign: 'left' }}>Short URL</th>
-                <th style={{ padding: '8px', textAlign: 'left' }}>Clicks</th>
-                <th style={{ padding: '8px', textAlign: 'left' }}>Actions</th>
+      <h2 className="text-3xl font-bold">My Dashboard</h2>
+      </div>
+      <p>Welcome to your personal dashboard! Here you will be able to see all the links you have created.</p>
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden" style={{marginTop:'2rem'}}>
+        { isLoading? <div className="p-12 flex justify-center"><Spinner /></div> :
+          error?(
+            <p className="p-6 text-red-500">Error:{error}</p>
+
+          ): links.length > 0 ?(
+            <table className="w-full text-left">
+            <thead className="bg-slate-50 border-b">
+              <tr >
+                <th className="p-4 font-semibold">Original URL</th>
+                <th className="p-4 font-semibold">Short URL</th>
+                <th className="p-4 font-semibold text-center">Clicks</th>
+                <th className="p-4 font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -85,24 +88,24 @@ const DashboardPage = () => {
               {links.map((link) => (
                 // 5. The `key` prop is crucial for React's performance and correctness.
                 //    We use the unique `_id` from MongoDB as the key.
-                <tr key={link._id} style={{ borderBottom: '1px solid #ddd' }}>
-                  <td style={{ padding: '8px', wordBreak: 'break-all' }}>
+                <tr key={link._id} className="border-b last:border-0 hover:bg-slate-50">
+                  <td className="p-4 max-w-xs truncate">
                     {/* Display a truncated version of the long URL for cleaner UI */}
-                    <a href={link.longurl} title={link.longurl} target="_blank" rel="noopener noreferrer">
+                    <a href={link.longurl} title={link.longurl} target="_blank" rel="noopener noreferrer" className="hover:underline">
                       {link.longurl.substring(0, 50)}...
                     </a>
                   </td>
-                  <td style={{ padding: '8px' }}>
+                  <td sclassName="p-4">
                     {/* The short URL is a clickable link that opens in a new tab */}
-                    <a href={link.shorturl} target="_blank" rel="noopener noreferrer">
+                    <a href={link.shorturl} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-mono hover:underline">
                       {link.shorturl}
                     </a>
                   </td>
-                  <td style={{ padding: '8px', textAlign: 'center' }}>
+                  <td className="p-4 text-center font-semibold">
                     {link.Clicks}
                   </td>
-                  <td style={{ padding: '8px' }}>
-                    <button type="button" className="btn btn-copy btn-small"onClick={()=>{handleCopy(link.shorturl.link._id)}}>
+                  <td className="p-4">
+                    <button type="button" className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md" onClick={()=>{handleCopy(link.shorturl.link._id)}}>
                       {copyLinkId === link._id ? 'Copied!' : 'Copy'}
                     </button>
                   </td>
@@ -111,13 +114,12 @@ const DashboardPage = () => {
             </tbody>
           </table>
         ) : (
-          <p>You haven't created any short links yet. Go to the homepage to create your first one!</p>
+          <p className="p-6 text-center text-slate-500">You haven't created any short links yet. Go to the homepage to create your first one!</p>
         )}
           
 
-
       </div>
-      <button className='btn btn-logout' onClick={handleLogout} style={{marginTop:'2rem'}}>Logout</button>
+      
 
 
       
