@@ -17,17 +17,17 @@ const shortenUrl = async(req,res)=>{
     }
 
     try{
-        let url=await Url.findOne({longUrl});
+        let url=await Url.findOne({longurl:longUrl});
         if (url){
             return res.status(200).json({success:true,data:url});
         }
         
         const {nanoid}=await import('nanoid');
         const urlCode=nanoid(7);
-        shortUrl=`${process.env.BASE_URL}/${urlCode}`;
+        ShortUrl=`${process.env.BASE_URL}/${urlCode}`;
         const newUrlData={
             longurl:longUrl,
-            shorturl:shortUrl,
+            shorturl:ShortUrl,
             urlcode:urlCode,
         };
         if (req.user){
@@ -56,12 +56,12 @@ const shortenUrl = async(req,res)=>{
 
 const redirectToUrl =async(req,res)=>{
     try{
-        const url=await Url.findOne({urlCode:req.params.code});
+        const url=await Url.findOne({urlcode:req.params.code});
         if (url){
             url.Clicks++;
 
             await url.save();
-            return res.redirect(301,url.longUrl);
+            return res.redirect(301,url.longurl);
         }
         else{
             return res.status(404).json({

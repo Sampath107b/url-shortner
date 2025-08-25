@@ -2,6 +2,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
+import { useAuth } from '../context/authContext.jsx';
 
 
 
@@ -16,6 +17,7 @@ const LoginPage = () => {
     password:''
   });
   const [error, setError]=React.useState(null);
+  const {login}=useAuth();
   const navigate=useNavigate();
   const handleChange = (e)=>{
     setFormData({
@@ -34,7 +36,8 @@ const LoginPage = () => {
       const response=await loginUser(formData);
       console.log('Login successful:',response.token);
       if (response.token){
-        localStorage.setItem('token',response.token);
+        // localStorage.setItem('token',response.token);
+        login(response.token);
         console.log('Token saved to localStorage');
         navigate('/dashboard');
       }

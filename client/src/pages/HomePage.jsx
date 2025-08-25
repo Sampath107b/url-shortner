@@ -2,6 +2,7 @@
 
 import React,{useState} from 'react'
 import { createShortUrl } from '../services/apiService';
+import { set } from 'mongoose';
 
 
 
@@ -9,14 +10,17 @@ const HomePage = () => {
   const [longUrl, setLongUrl]=useState("");
   const [shortUrlData, setShortUrlData]=useState(null);
   const [error, setError]=useState("");
-
+  const [isCopied, setIsCopied]=useState(false);
+  
   const handleSubmit = async(e)=>{
     e.preventDefault();
+    setIsCopied(false);
+    setError("");
     if (!longUrl) {
       alert('Please enter a URL');
       setError('Please enter a URL');
       setShortUrlData(null);
-
+      
       return;
     }
     try{
@@ -31,7 +35,20 @@ const HomePage = () => {
       console.error('Error from api:', error);
       
     }
-
+    
+  }
+  const handleCopy = async () => {
+    if (!shortUrlData) return;
+    try{
+      await navigator.clipboard.writeText(shortUrlData.shorturl);
+      setIsCopied(true);
+      setTimeout(()=>{setIsCopied(false);},2000);
+      alert('Short URL copied to clipboard!');
+    }
+    catch(err){
+      console.error('Failed to copy:', err);
+      alert('Failed to copy the URL. Please try manually.');
+    }
   }
 
 
@@ -74,6 +91,7 @@ const HomePage = () => {
             >
               {shortUrlData.shorturl}
             </a>
+            <button type='button' className='btn btn-copy' onClick={handleCopy}>{isCopied?'copied!':'copy'}</button>
           </p>
           <p style={{ fontSize: '0.8rem', color: '#555' }}>
             Original URL: {shortUrlData.longurl.substring(0, 70)}...

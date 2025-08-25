@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const API_URL = '/api/links/';
+const API_URL = 'http://localhost:5000/api/links/';
 
 export const getUserLinks = async (token) => {
 
     const config = {
         headers: {
-            Authorization: `Bearer ${token}`,
+            'x-auth-token': token ,
         },
     };
     try{
