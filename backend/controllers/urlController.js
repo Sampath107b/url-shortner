@@ -24,7 +24,7 @@ const shortenUrl = async(req,res)=>{
         
         const {nanoid}=await import('nanoid');
         const urlCode=nanoid(7);
-        ShortUrl=`${process.env.BASE_URL}/${urlCode}`;
+        const ShortUrl=`${process.env.BASE_URL}/${urlCode}`;
         const newUrlData={
             longurl:longUrl,
             shorturl:ShortUrl,
