@@ -1,4 +1,4 @@
-const Url = require('../models/Url.js');
+const Url = require('../models/url.js');
 
 const getMyLinks=async (req,res)=>{
     try{
