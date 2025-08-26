@@ -9,7 +9,7 @@ const {errorHandler} =require('./middleware/errorMiddleware.js');
 //app.use(express.urlencoded({ extended: true }));
 connectDB();
 app.use(cors({
-    origin:['http://localhost:5173', 'https://url-shortner-smoky-three.vercel.app'],
+    origin:['http://localhost:5173', 'https://url-shortner-git-main-sampaths-projects-a10d7eb4.vercel.app'],
     credentials:true,
 }));
 
