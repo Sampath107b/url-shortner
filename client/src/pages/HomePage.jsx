@@ -38,7 +38,7 @@ const HomePage = () => {
     e.preventDefault();
     setIsCopied(false);
     setError("");
-    setShortData(null);
+    setShortUrlData(null);
     const validationErrors = validateUrl();
     setFormErrors(validationErrors);
     
