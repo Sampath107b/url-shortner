@@ -16,10 +16,12 @@ export const getUserLinks = async (token) => {
     catch(error){
         console.error('Error fetching user links:', error);
         if (error.response && error.response.data) {
-            throw new Error(error.response.data.message || 'Failed to fetch user links');
+            console.error(error.status)
+            throw error;
+            
         }
         else{
-            throw new Error('Failed to fetch user links');
+            throw error;
         }
     }
 

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const auth = (req,res,next)=>{
     const token=req.header('x-auth-token');
     if (!token){
+        req.user=null;
        return next();
     }
     try{
@@ -12,7 +13,7 @@ const auth = (req,res,next)=>{
     }
     catch(err){
         console.error('token verification error:', err);
-        return res.status(401).json({success:false,error:'token is not valid'});
+        return res.status(401).json({success:false,error:'token is expired or is not valid'});
     }
 };
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate , useLocation} from 'react-router-dom'
 import './Navbar.css'
 import {useAuth} from '../context/authContext.jsx'
 
@@ -7,17 +7,22 @@ import {useAuth} from '../context/authContext.jsx'
 const Navbar = () => {
   const {isAuthenticated, logout} = useAuth();
   const navigate = useNavigate();
+    const location = useLocation();
   return (
     <nav className="bg-gray-800 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-2xl font-bold">
-            <Link to='/'>short.ly</Link>
+            <Link to='/'>Short.url</Link>
             
 
         </div>
         <ul className="flex gap-4 items-center">
             {isAuthenticated ? (
                 <>
+                <li>
+                    <Link to='/' className="hover:text-blue-300">HomePage</Link>
+
+                </li>
                 <li>
                     <Link to='/dashboard' className="hover:text-blue-300">Dashboard</Link>
                 </li>
@@ -30,6 +35,10 @@ const Navbar = () => {
                 </>
             ) : (
                 <>
+                <li>
+                    <Link to='/' className="hover:text-blue-300">HomePage</Link>
+
+                </li>
                 <li>
                     <Link to='/login' className="hover:text-blue-300">Login</Link>
                 </li>

@@ -21,16 +21,21 @@ const DashboardPage = () => {
   useEffect(()=>{
     const fetchLinks = async ()=>{
       try{
-        if (token){
-          
+        if(token){
           const response = await getUserLinks(token);
           setLinks(response.data);
         }
 
       }
       catch(err){
-        console.error('Error fetching links:', err);
+        console.error('Error fetching links 2:', err.status);
         setError(err.error || 'Failed to fetch links');
+        if (err.status == 401){ 
+          logout();
+          navigate('/');
+
+          
+        }
       }
       finally{
         setisLoading(false);
@@ -38,7 +43,7 @@ const DashboardPage = () => {
     };
     fetchLinks();
 
-  },[token]);
+  },[token,logout]);
   const handleCopy = async (text,linkId) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -67,13 +72,13 @@ const DashboardPage = () => {
 
       <h2 className="text-3xl font-bold">My Dashboard</h2>
       </div>
-      <p>Welcome to your personal dashboard! Here you will be able to see all the links you have created.</p>
+      {/* <p className="p-6 text-center text-slate-500">Welcome to your personal dashboard! Here you will be able to see all the links you have created.</p> */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden" style={{marginTop:'2rem'}}>
         { isLoading? <div className="p-12 flex justify-center"><Spinner /></div> :
           error?(
             <p className="p-6 text-red-500">Error:{error}</p>
 
-          ): links.length > 0 ?(
+          ): links.length > 0 ?(<>
             <table className="w-full text-left">
             <thead className="bg-slate-50 border-b">
               <tr >
@@ -95,7 +100,7 @@ const DashboardPage = () => {
                       {link.longurl.substring(0, 50)}...
                     </a>
                   </td>
-                  <td sclassName="p-4">
+                  <td className='p-4'>
                     {/* The short URL is a clickable link that opens in a new tab */}
                     <a href={link.shorturl} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-mono hover:underline">
                       {link.shorturl}
@@ -113,12 +118,16 @@ const DashboardPage = () => {
               ))}
             </tbody>
           </table>
+          
+          </>
+          
         ) : (
-          <p className="p-6 text-center text-slate-500">You haven't created any short links yet. Go to the homepage to create your first one!</p>
+          <p className="p-6 text-center text-slate-500">You haven't created any short links yet.</p>
         )}
           
 
       </div>
+      
       
 
 

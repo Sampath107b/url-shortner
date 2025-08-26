@@ -4,6 +4,7 @@ const express=require('express');
 const cors=require('cors');
 const app=express();
 app.use(express.json());
+import errorHandler from './middleware/errorMiddleware.js';
 //app.use(express.urlencoded({ extended: true }));
 connectDB();
 app.use(cors({
@@ -26,6 +27,7 @@ app.use('/api/links',linksRoutes);
 
 const indexRoutes=require('./routes/index');
 app.use('/',indexRoutes);
+// app.use(errorHandler);
 
 const PORT=process.env.PORT || 5000;
 

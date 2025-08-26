@@ -6,8 +6,10 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Navbar from './components/Navbar.jsx';
+import {useAuth} from './context/authContext.jsx';
 
 const App = () => {
+  const {token}=useAuth();
   return (
     <BrowserRouter>
       <div className="bg-slate-100 min-h-screen text-slate-800">
@@ -20,7 +22,7 @@ const App = () => {
          <Route path='/register' element={<RegisterPage />}/>
          <Route path='/dashboard' element={
           <PrivateRoute>
-            <DashboardPage />
+             <DashboardPage />
           </PrivateRoute>}/>
        </Routes>
        </main> 
