@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const apiUrl='http://localhost:5000/api/auth/';
+const apiUrl= import.meta.env.VITE_API_URL ||   'http://localhost:5000';
 
 export const registerUser=async (userData) => {
     try{
-        const response = await axios.post(apiUrl+'register',userData);
+        const response = await axios.post(apiUrl+'/api/auth/register',userData);
         return response.data;
     }catch(error){
         console.error('Error registering user:',error); 

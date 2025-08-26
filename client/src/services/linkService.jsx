@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/links/';
+const API_URL =import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export const getUserLinks = async (token) => {
 
@@ -10,7 +10,7 @@ export const getUserLinks = async (token) => {
         },
     };
     try{
-    const response = await axios.get(API_URL+'my-links', config);
+    const response = await axios.get(API_URL+'/api/links/my-links', config);
     return response.data;
     }
     catch(error){
