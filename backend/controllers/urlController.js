@@ -1,5 +1,5 @@
 const validUrl=require('valid-url');
-const Url=require('../models/Url.js');
+const Url=require('../models/Url');
 const bcrypt=require('bcryptjs');
 const User=require('../models/User.js');
 const jwt=require('jsonwebtoken');
