@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+const apiUrl= import.meta.env.VITE_API_URL ||   'http://localhost:5000';
 export const createShortUrl = async (longUrl) => {
     try {
-        const response = await axios.post('/api/shorten', { longUrl });
+        const response = await axios.post(apiUrl+'/api/shorten', { longUrl });
         return response.data;
     } catch (error) {
         console.error('Error creating short URL:', error);
