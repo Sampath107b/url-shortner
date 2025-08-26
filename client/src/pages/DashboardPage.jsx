@@ -70,10 +70,10 @@ const DashboardPage = () => {
     <div className="max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
 
-      <h2 className="text-3xl font-bold">My Dashboard</h2>
+      <h2 className="text-3xl font-bold ">My Dashboard</h2>
       </div>
       {/* <p className="p-6 text-center text-slate-500">Welcome to your personal dashboard! Here you will be able to see all the links you have created.</p> */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden" style={{marginTop:'2rem'}}>
+      <div className="bg-white rounded-lg shadow-lg overflow-x-auto" style={{marginTop:'2rem'}}>
         { isLoading? <div className="p-12 flex justify-center"><Spinner /></div> :
           error?(
             <p className="p-6 text-red-500">Error:{error}</p>

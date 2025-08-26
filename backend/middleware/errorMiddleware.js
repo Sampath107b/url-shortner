@@ -2,7 +2,7 @@
 
 const errorHandler = (err,req,res,next) => {
   let statusCode=err.statusCode || res.statusCode || 500;
-  if (err.name ==='CastErroe' && err.kind==='ObjectId'){
+  if (err.name ==='CastError' && err.kind==='ObjectId'){
     statusCode=404;
     err.message='Resource not found';
   }
@@ -14,4 +14,4 @@ const errorHandler = (err,req,res,next) => {
   });
 };
 
-export default errorHandler
+module.exports={ errorHandler};

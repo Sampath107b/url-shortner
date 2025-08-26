@@ -13,10 +13,39 @@ const HomePage = () => {
   const [isCopied, setIsCopied]=useState(false);
   const [isLoading, setIsLoading]=useState(false);
   
+  const [formErrors,setFormErrors]=useState({});
+  const validateUrl = () => {
+    const errors = {};
+    // A simple regex to check if the URL starts with http:// or https://
+    const urlPattern = new RegExp('^(https?:\\/\\/)'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+
+    if (!longUrl) {
+      errors.longUrl = 'URL field cannot be empty.';
+    } else if (!urlPattern.test(longUrl)) {
+      errors.longUrl = 'Please enter a valid URL (e.g., https://example.com).';
+    }
+    return errors;
+  };
+  
+  
+  
   const handleSubmit = async(e)=>{
     e.preventDefault();
     setIsCopied(false);
     setError("");
+    setShortUrl(null);
+    const validationErrors = validateUrl();
+    setFormErrors(validationErrors);
+    
+    // If the validationErrors object has any keys, it means there are errors.
+    if (Object.keys(validationErrors).length > 0) {
+      return; // Stop the submission
+    }
     setIsLoading(true);
     if (!longUrl) {
       alert('Please enter a URL');
@@ -35,6 +64,7 @@ const HomePage = () => {
       setError(error.message || 'An error occurred while creating the short URL.');
       setShortUrlData(null);
       console.error('Error from api:', error);
+      
       
     }finally{
       setIsLoading(false);
@@ -66,14 +96,30 @@ const HomePage = () => {
       <div className="mt-8 bg-white p-8 rounded-lg shadow-lg">
        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
             {/* <label htmlFor="LongUrl-input">Enter your Long-Url:</label> */}
+          <div className='flex-grow'> 
             <input type="url"
             id="LongUrl-input"
             placeholder='https://example.com/your-long-url'
             value={longUrl}
-            onChange={(e)=>setLongUrl(e.target.value)}
-            className="flex-grow p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            onChange={(e)=>{setLongUrl(e.target.value);
+              if (formErrors.longUrl) {
+                  setFormErrors({});
+              }
+            }
+          }
+            disabled={isLoading}
+              // Conditionally apply a red border if there's an error for this field
+              className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 ${formErrors.longUrl ? 'border-red-500' : 'border-gray-300'}`}
+            
+            
+            
             required
           />
+          {formErrors.longUrl && (
+              <p className="text-red-500 text-sm text-left mt-1">{formErrors.longUrl}</p>
+            )}
+
+          </div>
         <button type='submit'disabled={isLoading}
         className="bg-blue-600 text-white p-3 rounded-md font-semibold hover:bg-blue-700 disabled:bg-blue-400 w-full sm:w-auto"
         >{isLoading?<Spinner size="small"/>:'Shorten'}</button>
@@ -83,7 +129,7 @@ const HomePage = () => {
 
         {error && (
         
-          <p className="mt-4 text-red-500"><strong>Error:</strong> {error}</p>
+          <p className="mt-4 text-red-500">{error}</p>
         
         )}
         {shortUrlData && (

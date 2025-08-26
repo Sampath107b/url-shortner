@@ -86,7 +86,7 @@ const registerUser=async (req,res)=>{
         }
 
         
-        const exists=await User.findOne({email});
+        const exists=await User.findOne({email:email});
         if (exists){
             return res.status(400).json({success:false,error:'user already exists'});
         }
@@ -98,6 +98,12 @@ const registerUser=async (req,res)=>{
             email,
             password:hashedPassword,
         });
+        const payLoad={
+            user:{_id:newUser._id,},
+        };
+        const token=jwt.sign(payLoad,process.env.JWT_SECRET,{
+            expiresIn:'3d',
+        });
         res.status(201).json({
             success:true,
             message:'user registered successfully',
@@ -105,6 +111,7 @@ const registerUser=async (req,res)=>{
                 _id:newUser._id,
                 name:newUser.name,
                 email:newUser.email,
+                token:token,
             }
         });
     }
@@ -122,22 +129,25 @@ const loginUser=async (req,res)=>{
     try{
         const {email,password}=req.body;
         if (!email || !password){
-            return res.status(400).json({success:false,error:'please provide all fields'});
+            res.status(400); 
+            throw new Error('Please provide an email and password');
         }
         const user=await User.findOne({email}).select('+password');
         if (!user){
-            return res.status(400).json({success:false,error:'invalid credentials'});
+            res.status(401); // Unauthorized
+            throw new Error('Invalid credentials');
         }
         const isMatch=await bcrypt.compare(password,user.password);
         if (!isMatch){
-            return res.status(400).json({success:false,error:'invalid credentials'});
+            res.status(401); // Unauthorized
+            throw new Error('Invalid credentials');
         }
         
         const payLoad={
             user:{_id:user._id,},
         };
         const token=jwt.sign(payLoad,process.env.JWT_SECRET,{
-            expiresIn:'1h',
+            expiresIn:'3d',
         });
         res.status(200).json({
             success:true,
@@ -146,8 +156,8 @@ const loginUser=async (req,res)=>{
 
     }
     catch(err){
-        console.error('database error:',err);
-        res.status(500).json({success:false,error:'internal server error'});
+        // console.error('database error:',err);
+        next(err);
     }
 
 };

@@ -1,7 +1,8 @@
 
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import { registerUser } from '../services/authService';
+import { useAuth } from '../context/authContext';
 
 
 const RegisterPage = () => {
@@ -13,6 +14,8 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [error, setError] = React.useState(null);
   const [success, setSuccess] = React.useState(null);
+  const {login}=useAuth();
+  const navigate=useNavigate();
   const handleChange = async (e)=>{
     setFormData({
       ...formData,
@@ -42,11 +45,15 @@ const RegisterPage = () => {
         password: ''
       });
       setConfirmPassword('');
+      login(response.data.token);
+      console.log('token saved to localStorage');
+      navigate('/');
+
 
     }
     catch(err){
-      const errorMessage = err.message || err.error || 'Registration failed. Please try again.';
-      setError(errorMessage);
+      
+      setError(err.message);
 
     }
 

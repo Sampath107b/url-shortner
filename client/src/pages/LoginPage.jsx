@@ -39,14 +39,14 @@ const LoginPage = () => {
         // localStorage.setItem('token',response.token);
         login(response.token);
         console.log('Token saved to localStorage');
-        navigate('/');
+        navigate('/dashboard');
       }
 
     }
     catch(err){
-      const errorMessage = err.error || 'Login failed. Please try again.';
-      setError(errorMessage);
-      console.error('Login error:', err);
+      
+      setError(err.message);
+      
     }
 
 
