@@ -3,6 +3,7 @@
 import React,{useState} from 'react'
 import { createShortUrl } from '../services/apiService';
 import Spinner from '../components/Spinner.jsx'
+import {useAuth} from '../context/authContext.jsx';
 
 
 
@@ -14,6 +15,7 @@ const HomePage = () => {
   const [isLoading, setIsLoading]=useState(false);
   
   const [formErrors,setFormErrors]=useState({});
+  const {token}=useAuth();
   const validateUrl = () => {
     const errors = {};
     // A simple regex to check if the URL starts with http:// or https://
@@ -56,7 +58,7 @@ const HomePage = () => {
     }
     try{
       setError("");
-      const response = await createShortUrl(longUrl);
+      const response = await createShortUrl(longUrl,token);
       setShortUrlData(response.data);
       
     }
