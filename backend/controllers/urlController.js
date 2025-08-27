@@ -144,7 +144,7 @@ const loginUser=async (req,res)=>{
         }
         
         const payLoad={
-            user:{_id:user._id,},
+            user:{id:user._id,},
         };
         const token=jwt.sign(payLoad,process.env.JWT_SECRET,{
             expiresIn:'3d',
