@@ -8,7 +8,7 @@ const auth = (req,res,next)=>{
     }
     try{
         const decoder=jwt.verify(token,process.env.JWT_SECRET);
-        req.user=decoder.user;
+        req.user={ id: decoder.user.id };
         next();
     }
     catch(err){

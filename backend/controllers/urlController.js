@@ -99,7 +99,7 @@ const registerUser=async (req,res)=>{
             password:hashedPassword,
         });
         const payLoad={
-            user:{_id:newUser._id,},
+            user:{id:newUser._id,},
         };
         const token=jwt.sign(payLoad,process.env.JWT_SECRET,{
             expiresIn:'3d',
