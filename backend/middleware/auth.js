@@ -4,11 +4,15 @@ const auth = (req,res,next)=>{
     const token=req.header('x-auth-token');
     if (!token){
         req.user=null;
+        console.log("❌ No token provided");
+
        return next();
     }
     try{
         const decoder=jwt.verify(token,process.env.JWT_SECRET);
+        console.log("✅ Decoded user in middleware:", decoder.user);
         req.user={ id: decoder.user.id };
+        console.log("✅ req.user being set:", req.user);
         next();
     }
     catch(err){

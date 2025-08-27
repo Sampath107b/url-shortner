@@ -31,9 +31,14 @@ const shortenUrl = async(req,res)=>{
             urlcode:urlCode,
         };
         if (req.user){
+            console.log("👤 User found in shortenUrl:", req.user);
             newUrlData.user=req.user.id;
         }
+        else {
+            console.log("⚠️ No user found in shortenUrl");
+        }
         url=await Url.create(newUrlData);
+        console.log("✅ New URL saved:", url);
 
 
 
