@@ -1,6 +1,6 @@
 URL Shortener
 
-🔗 Live: https://url-shortner-git-main-sampaths-projects-a10d7eb4.vercel.app/
+🔗 Live: https://url-shortner-smoky-three.vercel.app
 
 A simple and efficient URL Shortener built with the MERN stack (MongoDB, Express.js, React, Node.js).
 It allows users to shorten long URLs into compact links and redirect seamlessly.
