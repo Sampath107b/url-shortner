@@ -130,7 +130,7 @@ const registerUser=async (req,res)=>{
         res.status(500).json({success:false,error:'internal server error'});
     }
 };
-const loginUser=async (req,res,next)=>{
+const loginUser=async (req,res)=>{
     try{
         const {email,password}=req.body;
         if (!email || !password){
@@ -162,7 +162,7 @@ const loginUser=async (req,res,next)=>{
     }
     catch(err){
         // console.error('database error:',err);
-        next(err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
     }
 
 };
