@@ -130,7 +130,7 @@ const registerUser=async (req,res)=>{
         res.status(500).json({success:false,error:'internal server error'});
     }
 };
-const loginUser=async (req,res)=>{
+const loginUser=async (req,res,next)=>{
     try{
         const {email,password}=req.body;
         if (!email || !password){
