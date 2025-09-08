@@ -22,7 +22,7 @@ export const loginUser=async (credentials)=>{
         const response = await axios.post(apiUrl+'/api/auth/login',credentials);
         return response.data;
     }catch(error){
-        console.error('Error logging in user:',error); 
+        
         if (error.response && error.response.data && error.response.data.error){
             throw new Error(error.response.data.error);
         }
